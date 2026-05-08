@@ -1,7 +1,7 @@
-package br.com.Cinetime.Cinetime.Repository;
+package com.Spring.Cinetime.Repository;
 
 
-import br.com.Cinetime.Cinetime.Model.Usuario;
+import com.Spring.Cinetime.Model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

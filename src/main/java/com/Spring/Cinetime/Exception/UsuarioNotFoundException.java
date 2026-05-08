@@ -1,4 +1,4 @@
-package br.com.Cinetime.Cinetime.Exception;
+package com.Spring.Cinetime.Exception;
 
 public class UsuarioNotFoundException extends RuntimeException {
     public UsuarioNotFoundException(Long message) {

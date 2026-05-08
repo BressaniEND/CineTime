@@ -1,4 +1,4 @@
-package br.com.Cinetime.Cinetime.Model;
+package com.Spring.Cinetime.Model;
 
 import jakarta.persistence.*;
 

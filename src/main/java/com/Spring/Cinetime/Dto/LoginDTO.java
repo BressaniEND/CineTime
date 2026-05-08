@@ -1,4 +1,4 @@
-package br.com.Cinetime.Cinetime.Dto;
+package com.Spring.Cinetime.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 

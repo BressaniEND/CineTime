@@ -1,9 +1,9 @@
-package br.com.Cinetime.Cinetime.Controller;
+package com.Spring.Cinetime.Controller;
 
-import br.com.Cinetime.Cinetime.Dto.LoginDTO;
-import br.com.Cinetime.Cinetime.Dto.UsuarioRequestDTO;
-import br.com.Cinetime.Cinetime.Model.Usuario;
-import br.com.Cinetime.Cinetime.Service.UsuarioService;
+import com.Spring.Cinetime.Dto.LoginDTO;
+import com.Spring.Cinetime.Dto.UsuarioRequestDTO;
+import com.Spring.Cinetime.Model.Usuario;
+import com.Spring.Cinetime.Service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
