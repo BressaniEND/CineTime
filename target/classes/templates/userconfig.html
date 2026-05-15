@@ -123,9 +123,17 @@
 
     <script>
       // =========================
+      // ELEMENTOS FOTO PERFIL
+      // =========================
+      const btnFoto = document.getElementById("btn-foto");
+      const avatarOverlay = document.getElementById("avatar-overlay");
+      const fileInput = document.getElementById("file-input");
+      const avatarPreview = document.getElementById("avatar-preview");
+      const avatarIcon = document.getElementById("avatar-icon");
+
+      // =========================
       // CARREGAR USUÁRIO LOGADO
       // =========================
-
       async function carregarUsuario() {
         const userId = localStorage.getItem("userId");
 
@@ -149,13 +157,17 @@
           const usuario = await response.json();
 
           console.log("Usuário carregado:", usuario);
-          console.log("DATA:", usuario.dataNascimento);
 
-          // preenche os campos
+          // =========================
+          // CAMPOS USUÁRIO
+          // =========================
           document.getElementById("username").value = usuario.name || "";
+
           document.getElementById("email").value = usuario.email || "";
 
-          // preenche data formatada
+          // =========================
+          // DATA FORMATADA
+          // =========================
           if (usuario.dataNascimento) {
             const partes = usuario.dataNascimento.split("-");
 
@@ -165,21 +177,35 @@
 
             document.getElementById("birthdate").value = `${dia}/${mes}/${ano}`;
           }
+
+          // =========================
+          // FOTO PERFIL
+          // =========================
+          const fotoSalva = localStorage.getItem("fotoPerfil");
+
+          if (fotoSalva) {
+            avatarPreview.src = fotoSalva;
+            avatarPreview.style.display = "block";
+
+            avatarIcon.style.display = "none";
+          }
+
+          // =========================
+          // BIOGRAFIA
+          // =========================
+          const bioSalva = localStorage.getItem("biografiaUsuario");
+
+          if (bioSalva) {
+            document.getElementById("bio").value = bioSalva;
+          }
         } catch (error) {
           console.error(error);
+
           alert("Erro ao carregar usuário.");
-        }
-
-        const fotoSalva = localStorage.getItem("fotoPerfil");
-
-        if (fotoSalva) {
-          avatarPreview.src = fotoSalva;
-          avatarPreview.style.display = "block";
-          avatarIcon.style.display = "none";
         }
       }
 
-      // executa ao abrir a página
+      // executa ao abrir página
       carregarUsuario();
 
       // =========================
@@ -200,17 +226,12 @@
       // =========================
       // FOTO PERFIL
       // =========================
-      const btnFoto = document.getElementById("btn-foto");
-      const avatarOverlay = document.getElementById("avatar-overlay");
-      const fileInput = document.getElementById("file-input");
-      const avatarPreview = document.getElementById("avatar-preview");
-      const avatarIcon = document.getElementById("avatar-icon");
-
       function triggerFileSelect() {
         fileInput.click();
       }
 
       btnFoto.addEventListener("click", triggerFileSelect);
+
       avatarOverlay.addEventListener("click", triggerFileSelect);
 
       fileInput.addEventListener("change", function () {
@@ -225,10 +246,12 @@
 
           // mostra imagem
           avatarPreview.src = imagemBase64;
+
           avatarPreview.style.display = "block";
+
           avatarIcon.style.display = "none";
 
-          // salva no localStorage
+          // salva localStorage
           localStorage.setItem("fotoPerfil", imagemBase64);
         };
 
@@ -240,13 +263,16 @@
       // =========================
       function showToast(msg, duration = 2800) {
         const toast = document.getElementById("toast");
+
         const toastMsg = document.getElementById("toast-msg");
 
         toastMsg.textContent = msg;
 
         toast.classList.add("show");
 
-        setTimeout(() => toast.classList.remove("show"), duration);
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, duration);
       }
 
       // =========================
@@ -258,25 +284,57 @@
           const userId = localStorage.getItem("userId");
 
           const username = document.getElementById("username").value.trim();
+
           const birthdate = document.getElementById("birthdate").value.trim();
+
           const email = document.getElementById("email").value.trim();
+
+          const bio = document.getElementById("bio").value.trim();
+
           const senha = document.getElementById("senha").value.trim();
 
-          // converte data para yyyy-MM-dd
+          // salva bio
+          localStorage.setItem("biografiaUsuario", bio);
+
+          // =========================
+          // DATA FORMATADA
+          // =========================
           const partesData = birthdate.split("/");
 
           const dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
 
+          // =========================
+          // VALIDAÇÕES
+          // =========================
           if (!username) {
             showToast("Por favor, preencha o Nome de Usuário.");
+
             document.getElementById("username").focus();
+
             return;
           }
 
           if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             showToast("Por favor, insira um e-mail válido.");
+
             document.getElementById("email").focus();
+
             return;
+          }
+
+          // =========================
+          // BODY REQUEST
+          // =========================
+          const bodyData = {
+            name: username,
+            date: dataFormatada,
+            email: email,
+          };
+
+          // adiciona senha SOMENTE se preenchida
+          if (senha) {
+            bodyData.senha = senha;
+            bodyData.confirmarSenha = senha;
           }
 
           try {
@@ -289,13 +347,7 @@
                   "Content-Type": "application/json",
                 },
 
-                body: JSON.stringify({
-                  name: username,
-                  date: dataFormatada,
-                  email: email,
-                  senha: senha,
-                  confirmarSenha: senha,
-                }),
+                body: JSON.stringify(bodyData),
               },
             );
 

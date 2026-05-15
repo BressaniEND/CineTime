@@ -47,7 +47,7 @@ public class UsuarioService {
             usuario.setConfirmarSenha(dto.confirmarSenha());
 
         }
-        
+
         return usuarioRepository.save(usuario);
     }
     
