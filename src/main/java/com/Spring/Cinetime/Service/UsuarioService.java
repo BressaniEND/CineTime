@@ -36,13 +36,18 @@ public class UsuarioService {
 
     public Usuario update(Long id, UsuarioRequestDTO dto) {
         var usuario = findById(id);
+
         usuario.setName(dto.name());
         usuario.setEmail(dto.email());
-        if(dto.senha() != null && !dto.senha().isBlank()){
-            usuario.setSenha(dto.senha());
-        }
         usuario.setDataNascimento(dto.date());
 
+        if(dto.senha() != null && !dto.senha().isBlank()) {
+
+            usuario.setSenha(dto.senha());
+            usuario.setConfirmarSenha(dto.confirmarSenha());
+
+        }
+        
         return usuarioRepository.save(usuario);
     }
     
