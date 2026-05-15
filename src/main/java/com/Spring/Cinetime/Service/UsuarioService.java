@@ -38,7 +38,9 @@ public class UsuarioService {
         var usuario = findById(id);
         usuario.setName(dto.name());
         usuario.setEmail(dto.email());
-        usuario.setSenha(dto.senha());
+        if(dto.senha() != null && !dto.senha().isBlank()){
+            usuario.setSenha(dto.senha());
+        }
         usuario.setDataNascimento(dto.date());
 
         return usuarioRepository.save(usuario);
